@@ -9,10 +9,10 @@ STM32 register-level peripheral drivers (no HAL/LL).
             └── USART/
                 └── USART1/
                     ├── Basic/
-                    │   ├── usart1.c
-                    │   ├── usart1.h
+                    │   ├── usart1_init.c
+                    │   ├── usart1_init.h
                     │   └── README.txt
                     └── Compile-Time/
-                        ├── usart1.c
-                        ├── usart1.h
+                        ├── usart1_init.c
+                        ├── usart1_init.h
                         └── README.txt
