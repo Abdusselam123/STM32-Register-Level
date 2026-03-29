@@ -1,11 +1,11 @@
 # STM32-Register-Level
 
-STM32 register-level peripheral drivers and examples (no HAL/LL).
+This repository contains two independent parts: compile-time abstraction drivers and bare-metal peripheral initialization examples for STM32.
+The examples focus on direct register-level programming without any abstraction layers, while the drivers use static, header-only configuration to provide compile-time optimized hardware abstraction.
+
 
 ---------- Repository Structure ---------
-
 ```text
-
 └── F3-Series/
     └── Nucleo-f302r8/
         └── Drivers/
