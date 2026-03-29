@@ -28,4 +28,10 @@ STM32 register-level peripheral drivers and examples (no HAL/LL).
             │    └── USART2/          
             │        ├── main.c       
             │        └── README.txt
+            └── I2C/
+            │    └── I2C2/          
+            │        ├── main.c       
+            │        └── README.txt
+            │ 
             └──...
+
