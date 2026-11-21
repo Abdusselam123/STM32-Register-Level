@@ -17,3 +17,4 @@ USART registers: CR1, BRR
 
 📌 Note
 This project is intended for learning low-level STM32 peripheral control.
+HAL is used in main.c only for HAL_Init() / HAL_Delay() (test delay); the USART2 setup itself is register-level.

@@ -10,46 +10,25 @@
 static inline void Enable_Usart_GPIO_Clock(void);
 static inline void Enable_Usart_Clock(void);
 
-void USART1_Init(){
+void USART1_Init(void){
 
 	//CLOCK SETTINGS
 	Enable_Usart_GPIO_Clock();
 	Enable_Usart_Clock();
 
 	//USART1_TX_PIN RESET & AF
-	USART1_TX_PORT->MODER &= ~(3<<(USART1_TX_PIN*2));
-	USART1_TX_PORT->MODER |= (2<<(USART1_TX_PIN*2));
+	USART1_TX_PORT->MODER &= ~(3U<<(USART1_TX_PIN*2));
+	USART1_TX_PORT->MODER |= (2U<<(USART1_TX_PIN*2));
 	//USART1_RX_PIN RESET & AF
-	USART1_RX_PORT->MODER &= ~(3<<(USART1_RX_PIN*2));
-	USART1_RX_PORT->MODER |= (2<<(USART1_RX_PIN*2));
+	USART1_RX_PORT->MODER &= ~(3U<<(USART1_RX_PIN*2));
+	USART1_RX_PORT->MODER |= (2U<<(USART1_RX_PIN*2));
 
-	if(USART1_TX_PIN<8){
-		//TX_PIN RESET
-		USART1_TX_PORT->AFR[0] &= ~(0xF<<(USART1_TX_PIN*4));
-		//TX_PIN SET
-		USART1_TX_PORT->AFR[0] |= (USART1_AF_VALUE<<(USART1_TX_PIN*4));
-	}
-		else{
-			uint8_t shift_amount_1 = (uint8_t)((USART1_TX_PIN - 8) * 4);
-			//TX_PIN RESET
-			USART1_TX_PORT->AFR[1] &= ~(0xF<<shift_amount_1);
-			//TX_PIN SET
-			USART1_TX_PORT->AFR[1] |= (USART1_AF_VALUE<<shift_amount_1);
-		}
-
-	if(USART1_RX_PIN<8){
-			//TX_PIN RESET
-			USART1_RX_PORT->AFR[0] &= ~(0xF<<(USART1_RX_PIN*4));
-			//TX_PIN SET
-			USART1_RX_PORT->AFR[0] |= (USART1_AF_VALUE<<(USART1_RX_PIN*4));
-		}
-			else{
-				uint8_t shift_amount_2 = (uint8_t)((USART1_RX_PIN - 8) * 4);
-				//TX_PIN RESET
-				USART1_RX_PORT->AFR[1] &= ~(0xF<<shift_amount_2);
-				//TX_PIN SET
-				USART1_RX_PORT->AFR[1] |= (USART1_AF_VALUE<<shift_amount_2);
-			}
+	//TX_PIN AF: AFR[0] for pins 0..7, AFR[1] for pins 8..15
+	USART1_TX_PORT->AFR[USART1_TX_PIN >> 3] &= ~(0xFU << ((USART1_TX_PIN & 7U) * 4U));
+	USART1_TX_PORT->AFR[USART1_TX_PIN >> 3] |=  ((uint32_t)USART1_AF_VALUE << ((USART1_TX_PIN & 7U) * 4U));
+	//RX_PIN AF
+	USART1_RX_PORT->AFR[USART1_RX_PIN >> 3] &= ~(0xFU << ((USART1_RX_PIN & 7U) * 4U));
+	USART1_RX_PORT->AFR[USART1_RX_PIN >> 3] |=  ((uint32_t)USART1_AF_VALUE << ((USART1_RX_PIN & 7U) * 4U));
 
 
 	//USART SETTINGS
@@ -77,6 +56,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOA);
 		#elif defined(RCC_APB2ENR_GPIOAEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOA);
+		#else
+			#error "GPIOA clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -96,6 +77,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOB);
 		#elif defined(RCC_APB2ENR_GPIOBEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOB);
+		#else
+			#error "GPIOB clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -115,6 +98,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOC);
 		#elif defined(RCC_APB2ENR_GPIOCEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOC);
+		#else
+			#error "GPIOC clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -134,6 +119,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOD);
 		#elif defined(RCC_APB2ENR_GPIODEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOD);
+		#else
+			#error "GPIOD clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -153,6 +140,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOE);
 		#elif defined(RCC_APB2ENR_GPIOEEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOE);
+		#else
+			#error "GPIOE clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -172,6 +161,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOF);
 		#elif defined(RCC_APB2ENR_GPIOFEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOF);
+		#else
+			#error "GPIOF clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -191,6 +182,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOG);
 		#elif defined(RCC_APB2ENR_GPIOGEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOG);
+		#else
+			#error "GPIOG clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -210,6 +203,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOH);
 		#elif defined(RCC_APB2ENR_GPIOHEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOH);
+		#else
+			#error "GPIOH clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -229,6 +224,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOI);
 		#elif defined(RCC_APB2ENR_GPIOIEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOI);
+		#else
+			#error "GPIOI clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -248,6 +245,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOJ);
 		#elif defined(RCC_APB2ENR_GPIOJEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOJ);
+		#else
+			#error "GPIOJ clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -267,6 +266,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOK);
 		#elif defined(RCC_APB2ENR_GPIOKEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOK);
+		#else
+			#error "GPIOK clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -293,6 +294,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOA);
 		#elif defined(RCC_APB2ENR_GPIOAEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOA);
+		#else
+			#error "GPIOA clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -312,6 +315,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOB);
 		#elif defined(RCC_APB2ENR_GPIOBEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOB);
+		#else
+			#error "GPIOB clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -331,6 +336,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOC);
 		#elif defined(RCC_APB2ENR_GPIOCEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOC);
+		#else
+			#error "GPIOC clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -350,6 +357,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOD);
 		#elif defined(RCC_APB2ENR_GPIODEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOD);
+		#else
+			#error "GPIOD clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -369,6 +378,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOE);
 		#elif defined(RCC_APB2ENR_GPIOEEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOE);
+		#else
+			#error "GPIOE clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -388,6 +399,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOF);
 		#elif defined(RCC_APB2ENR_GPIOFEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOF);
+		#else
+			#error "GPIOF clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -407,6 +420,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOG);
 		#elif defined(RCC_APB2ENR_GPIOGEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOG);
+		#else
+			#error "GPIOG clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -426,6 +441,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOH);
 		#elif defined(RCC_APB2ENR_GPIOHEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOH);
+		#else
+			#error "GPIOH clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -445,6 +462,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOI);
 		#elif defined(RCC_APB2ENR_GPIOIEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOI);
+		#else
+			#error "GPIOI clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -464,6 +483,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOJ);
 		#elif defined(RCC_APB2ENR_GPIOJEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOJ);
+		#else
+			#error "GPIOJ clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -483,6 +504,8 @@ static inline void Enable_Usart_GPIO_Clock(void){
 	        ENABLE_GPIO_CLOCK(APB1ENR, GPIOK);
 		#elif defined(RCC_APB2ENR_GPIOKEN)
 	        ENABLE_GPIO_CLOCK(APB2ENR, GPIOK);
+		#else
+			#error "GPIOK clock enable bit not found for this MCU."
 		#endif
 	#endif
 
@@ -507,6 +530,8 @@ static inline void Enable_Usart_Clock(void){
 	        ENABLE_USART_CLOCK(APB1ENR, USART1);
 		#elif defined(RCC_APB2ENR_USART1EN)
 	        ENABLE_USART_CLOCK(APB2ENR, USART1);
+		#else
+			#error "USART1 clock enable bit not found for this MCU."
 		#endif
 	#endif
 

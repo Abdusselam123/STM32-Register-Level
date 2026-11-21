@@ -8,7 +8,7 @@ GPIO alternate function setup (SCL / SDA)
 Standard mode configuration (100 kHz)
 
 ▶️ Usage
-I2C2_Init();
+i2c2_init_example_1();
 
 🧠 Highlights
 RCC clock control
